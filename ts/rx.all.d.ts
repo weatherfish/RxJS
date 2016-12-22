@@ -138,7 +138,7 @@ declare module Rx {
         *  @param {Mixed} [oOrOnNext] The object that is to receive notifications or an action to invoke for each element in the observable sequence.
         *  @param {Function} [onError] Action to invoke upon exceptional termination of the observable sequence.
         *  @param {Function} [onCompleted] Action to invoke upon graceful termination of the observable sequence.
-        *  @returns {Diposable} A disposable handling the subscriptions and unsubscriptions.
+        *  @returns {Disposable} A disposable handling the subscriptions and unsubscriptions.
         */
         subscribe(observer: IObserver<T>): IDisposable;
         /**
@@ -146,7 +146,7 @@ declare module Rx {
         *  @param {Mixed} [oOrOnNext] The object that is to receive notifications or an action to invoke for each element in the observable sequence.
         *  @param {Function} [onError] Action to invoke upon exceptional termination of the observable sequence.
         *  @param {Function} [onCompleted] Action to invoke upon graceful termination of the observable sequence.
-        *  @returns {Diposable} A disposable handling the subscriptions and unsubscriptions.
+        *  @returns {Disposable} A disposable handling the subscriptions and unsubscriptions.
         */
         subscribe(onNext?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): IDisposable;
     }
@@ -157,7 +157,7 @@ declare module Rx {
         *  @param {Mixed} [oOrOnNext] The object that is to receive notifications or an action to invoke for each element in the observable sequence.
         *  @param {Function} [onError] Action to invoke upon exceptional termination of the observable sequence.
         *  @param {Function} [onCompleted] Action to invoke upon graceful termination of the observable sequence.
-        *  @returns {Diposable} A disposable handling the subscriptions and unsubscriptions.
+        *  @returns {Disposable} A disposable handling the subscriptions and unsubscriptions.
         */
         subscribe(observer: IObserver<T>): IDisposable;
         /**
@@ -165,7 +165,7 @@ declare module Rx {
         *  @param {Mixed} [oOrOnNext] The object that is to receive notifications or an action to invoke for each element in the observable sequence.
         *  @param {Function} [onError] Action to invoke upon exceptional termination of the observable sequence.
         *  @param {Function} [onCompleted] Action to invoke upon graceful termination of the observable sequence.
-        *  @returns {Diposable} A disposable handling the subscriptions and unsubscriptions.
+        *  @returns {Disposable} A disposable handling the subscriptions and unsubscriptions.
         */
         subscribe(onNext?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): IDisposable;
 
@@ -196,7 +196,7 @@ declare module Rx {
         *  @param {Mixed} [oOrOnNext] The object that is to receive notifications or an action to invoke for each element in the observable sequence.
         *  @param {Function} [onError] Action to invoke upon exceptional termination of the observable sequence.
         *  @param {Function} [onCompleted] Action to invoke upon graceful termination of the observable sequence.
-        *  @returns {Diposable} A disposable handling the subscriptions and unsubscriptions.
+        *  @returns {Disposable} A disposable handling the subscriptions and unsubscriptions.
         */
         forEach(observer: IObserver<T>): IDisposable;
 
@@ -205,7 +205,7 @@ declare module Rx {
         *  @param {Mixed} [oOrOnNext] The object that is to receive notifications or an action to invoke for each element in the observable sequence.
         *  @param {Function} [onError] Action to invoke upon exceptional termination of the observable sequence.
         *  @param {Function} [onCompleted] Action to invoke upon graceful termination of the observable sequence.
-        *  @returns {Diposable} A disposable handling the subscriptions and unsubscriptions.
+        *  @returns {Disposable} A disposable handling the subscriptions and unsubscriptions.
         */
         forEach(onNext?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): IDisposable;
     }
@@ -220,6 +220,8 @@ declare module Rx {
     }
 
     export var Observable: ObservableStatic;
+    export var ConnectableObservable: ObservableStatic;
+
 
     export module internals {
         export var inherits: (child: any, parent: any) => void;
@@ -498,7 +500,7 @@ declare module Rx {
         */
         onCompleted(): void;
     }
-    
+
     export interface Observer<T> {
         /**
         * Notifies the observer of a new element in the sequence.
@@ -2268,7 +2270,7 @@ declare module Rx {
         * @param {Function} [comparer]  Used to compare items in the collection.
         * @returns {Observable} An observable sequence only containing the distinct elements, based on a computed key value, from the source sequence.
         */
-        distinct<TKey>(keySelector?: (value: T) => TKey, keySerializer?: (key: TKey) => string): Observable<T>;
+        distinct<TKey>(keySelector?: (value: T) => TKey, comparer?: _Comparer<TKey, boolean>): Observable<T>;
     }
 
     export interface Observable<T> {
@@ -2361,6 +2363,7 @@ declare module Rx {
         * @returns {Observable} Returns a new Observable sequence of property values.
         */
         pluck<TResult>(prop: string): Observable<TResult>;
+        pluck<TResult>(...props: string[]): Observable<TResult>;
     }
 
 
@@ -4172,6 +4175,10 @@ declare module Rx {
         */
         timestamp(scheduler?: IScheduler): Observable<Timestamp<T>>;
     }
+
+    export interface ObservableStatic {
+         prototype: any;
+     }
 
     export interface Observable<T> {
         /**
